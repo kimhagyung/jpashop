@@ -1,6 +1,8 @@
 package jpabook.jpashop.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,26 +24,35 @@ public class Order {
 	@Column(name="ORDER_ID")
 	private Long id;
 	
-	@Column(name="MEMBER_ID")
-	private Long memberId; //누가 주문했는지 알게하기 위해 
+	//@Column(name="MEMBER_ID") 이제 필요없음 
+	//private Long memberId; //누가 주문했는지 알게하기 위해 
 	
+	@ManyToOne
+	@JoinColumn(name="MEMBER_ID")
 	private Member member;
 	
 	private LocalDateTime orderDate;
+	
+	
 	@Enumerated(EnumType.STRING) //순서를 위해 꼭 ! string으로 
 	private OrderStatus status;
+	
+	
+	@OneToMany(mappedBy = "order")
+	private List<OrderItem> orderItems= new ArrayList<>();
+
+	//ㅇ연관관계 편의 메소두ㅡ)((양방향관계일떄)
+	public void addOrderItem(OrderItem orderItem) { 
+		orderItems.add(orderItem);
+		orderItem.setOrder(this);
+	}
+
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public Long getMemberId() {
-		return memberId;
-	}
-	public void setMemberId(Long memberId) {
-		this.memberId = memberId;
-	}
+	} 
 	public LocalDateTime getOrderDate() {
 		return orderDate;
 	}
@@ -57,5 +71,5 @@ public class Order {
 	public void setMember(Member member) {
 		this.member = member;
 	}
-
+	
 }
