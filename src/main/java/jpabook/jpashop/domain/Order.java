@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -26,10 +27,13 @@ public class Order {
 	
 	//@Column(name="MEMBER_ID") 이제 필요없음 
 	//private Long memberId; //누가 주문했는지 알게하기 위해 
-	
 	@ManyToOne
 	@JoinColumn(name="MEMBER_ID")
 	private Member member;
+
+	@OneToOne
+	@JoinColumn(name="DELIVERY_ID")
+	private Delivery delivery;
 	
 	private LocalDateTime orderDate;
 	
