@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Item {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) ///싱글 테이블 싫으면 Join으로 적으면 됨. 
+@DiscriminatorColumn
+public abstract class Item extends BaseEntity {
 	
 	@Id @GeneratedValue
 	@Column(name = "ITEM_ID")
